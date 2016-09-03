@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>My AngularJS App</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="app.css">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDgC_vFP5x6B9vyD-1H66MWqPyTcL_PMBk",
+      authDomain: "peripheral-shooter.firebaseapp.com",
+      databaseURL: "https://peripheral-shooter.firebaseio.com",
+      storageBucket: "",
+    };
+    firebase.initializeApp(config);
+
+    firebase.auth().createUserWithEmailAndPassword('dan@snapjay.com', 'qwerty').catch(function(error) {
+//    firebase.auth().signInAnonymously().catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log (error.message)
+    });
+  </script>
+</head>
+<body>
+
+<div class="container">
+
+  <ul class="menu">
+    <li><a href="#!/instructor">Instructor</a></li>
+    <li><a href="#!/shooter">Shooter</a></li>
+  </ul>
+
+  <div ng-view></div>
+
+</div>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="app.js"></script>
+  <script src="instructor/instructor.js"></script>
+  <script src="shooter/shooter.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+  <script src="components/shooter.js"></script>
+</body>
+</html>
