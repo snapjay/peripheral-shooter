@@ -13,7 +13,7 @@ angular.module('myApp.instructor', ['ngRoute', 'myApp.peripheralShooter'])
 
     $scope.opts = {
         delay: 5,
-        interval: 5,
+        interval: 2,
         screens: 2,
         targets: 5,
         shots:5

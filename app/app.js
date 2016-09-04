@@ -5,7 +5,6 @@ angular.module('myApp', [
   'ngRoute',
   'myApp.instructor',
   'myApp.shooter',
-  'myApp.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');

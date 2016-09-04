@@ -11,7 +11,6 @@ angular.module('myApp.peripheralShooter', [])
             screens: 2,
             targets: 5,
             shots:5
-
         };
 
         firebase.database().ref('target/').remove();
@@ -42,11 +41,11 @@ angular.module('myApp.peripheralShooter', [])
             this._runState = 1;
             var _opts  =(this._options);
             var _this = this;
-            var iteration = 0;
 
+            _this._update(_opts);
+            var iteration = 1;
             this._interval =  $interval(function(){
                     iteration++;
-                    console.log(iteration);
                     if (iteration > _this._options.targets){
                         _this._stop();
                     }
