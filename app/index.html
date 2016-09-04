@@ -10,7 +10,8 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="app.css">
-  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
   <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
   <script>
     // Initialize Firebase
@@ -22,7 +23,7 @@
     };
     firebase.initializeApp(config);
 
-    firebase.auth().createUserWithEmailAndPassword('dan@snapjay.com', 'qwerty').catch(function(error) {
+    firebase.auth().signInWithEmailAndPassword('dan@snapjay.com', 'qwerty').catch(function(error) {
 //    firebase.auth().signInAnonymously().catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -37,9 +38,11 @@
 
   <ul class="menu">
     <li><a href="#!/instructor">Instructor</a></li>
-    <li><a href="#!/shooter">Shooter</a></li>
+    <li><a href="#!/shooter/1">Shooter (Left)</a></li>
+    <li><a href="#!/shooter/2">Shooter (Right)</a></li>
   </ul>
-
+</div>
+<div class="container">
   <div ng-view></div>
 
 </div>

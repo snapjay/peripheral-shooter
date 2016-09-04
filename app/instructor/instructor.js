@@ -9,11 +9,29 @@ angular.module('myApp.instructor', ['ngRoute', 'myApp.peripheralShooter'])
   });
 }])
 
-.controller('instructorCtrl', ['$scope', 'shooter', function($scope, shooter) {
+.controller('instructorCtrl', ['$rootScope', '$scope', 'shooter', function($rootScope, $scope, shooter) {
 
-        $scope.toggle = function(){
-        $scope.runState = shooter.toggle();
-    }
+    $scope.opts = {
+        delay: 5,
+        interval: 5,
+        screens: 2,
+        targets: 5,
+        shots:5
+
+    };
+
+    $scope.toggle = function(){
+        $scope.runState = shooter.toggle($scope.opts);
+    };
+
+
+    $rootScope.$on('dataChange', function(ev, data){
+        $scope.data = data;
+    });
+    $rootScope.$on('runState', function(ev, data){
+        $scope.runState = data;
+    });
+
 
 
 

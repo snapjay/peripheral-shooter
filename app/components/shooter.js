@@ -5,14 +5,29 @@ angular.module('myApp.peripheralShooter', [])
 
         this._runState = 0;
         this._interval = null;
+        this._options = {
+            delay: 5,
+            interval: 5,
+            screens: 2,
+            targets: 5,
+            shots:5
 
-        this.toggle = function () {
+        };
+
+        firebase.database().ref('target/').remove();
+
+        var starCountRef = firebase.database().ref('target/');
+        starCountRef.on('value', function(payload) {
+            $rootScope.$emit('dataChange', payload.val())
+        });
+
+
+        this.toggle = function (opts) {
+            this._options = opts;
 
             if (this._runState == 0) { // START
-                this._runState = 1;
                 this._start();
             } else {              // STOP
-                this._runState = 0;
                 this._stop();
             }
 
@@ -20,39 +35,51 @@ angular.module('myApp.peripheralShooter', [])
 
         };
 
-        this._genPayload = function() {
 
-            return {
-                screen: randomInt(1,2),
-                target: randomInt(1,4),
-                fontSize: 70
-            }
 
-        };
         this._start = function () {
 
-            this._interval =  $interval(this._update
-                , 2000, 5);
-        };
-        this._update = function(){
-            firebase.database().ref('target/').set({
-                screen: randomInt(1,12),
-                target: randomInt(1,41),
-                fontSize: 70
-            });
+            this._runState = 1;
+            var _opts  =(this._options);
+            var _this = this;
+            var iteration = 0;
+
+            this._interval =  $interval(function(){
+                    iteration++;
+                    console.log(iteration);
+                    if (iteration > _this._options.targets){
+                        _this._stop();
+                    }
+                    _this._update(_opts);
+            }
+                , (this._options.interval * 1000)
+                ,  this._options.shots
+            );
+
+            $rootScope.$emit('runState', this._runState)
+
         };
 
+        this._stop = function() {
 
-        this._stop = function(){
             $interval.cancel(this._interval);
+            this._runState = 0;
+            firebase.database().ref('target/').remove();
+            $rootScope.$emit('runState', this._runState)
+            $rootScope.$emit('dataChange', {})
+
         };
 
 
-        var starCountRef = firebase.database().ref('target/');
-        starCountRef.on('value', function(payload) {
-            $rootScope.$broadcast('changeb', payload)
-            $rootScope.$emit('changee', payload)
-        });
+        this._update = function(_options){
+
+            var payload = {
+                screen: randomInt(1,this._options.screens),
+                target: randomInt(1,this._options.targets),
+                fontSize: 70
+            };
+            firebase.database().ref('target/').set(payload);
+        };
 
 
         function randomInt(min,max)
