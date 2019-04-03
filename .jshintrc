@@ -1,9 +1,10 @@
 {
+  "esversion": 6,
   "strict": "global",
+  "asi" : true,
   "globals": {
     // Angular
     "angular": false,
-
     // Angular mocks
     "module": false,
     "inject": false,
