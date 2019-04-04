@@ -1,15 +1,9 @@
 {
   "esversion": 6,
   "strict": "global",
-  "asi" : true,
+  "asi": true,
   "globals": {
-    // Angular
-    "angular": false,
-    // Angular mocks
-    "module": false,
-    "inject": false,
-
-    // Jasmine
+    "process": false,
     "jasmine": false,
     "describe": false,
     "beforeEach": false,
@@ -17,7 +11,7 @@
     "it": false,
     "expect": false,
 
-    // Protractor
+
     "browser": false,
     "element": false,
     "by": false
