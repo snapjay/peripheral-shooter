@@ -13,22 +13,23 @@ const Firebase = class {
       // messagingSenderId: '447871794333'
     })
     this.db = firebase.firestore()
-    this.collectionPath = 'racers'
+    this.collectionPath = 'round'
   }
 
-  addRow () {
+  addRow (screen, content, style = {}) {
     return this.db.collection(this.collectionPath).add({
-      name: 'Eli Tomac',
-      bike: 'Kawasaki',
-      number: 3,
-      450: true,
-      created_on: firebase.firestore.Timestamp.fromDate(new Date()),
+      screen,
+      content,
+      style,
+      created: firebase.firestore.Timestamp.fromDate(new Date()),
     })
   }
 
-  listenUsers (callback) {
-    this.getDB().collection(this.collectionPath).onSnapshot((querySnapshot) => {
-      callback(querySnapshot)
+  listenScreen (screen, callback) {
+    this.getDB().collection(this.collectionPath).where('screen', '==', screen).limit(1).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
+      callback(querySnapshot.docs[0].get('content'),
+        querySnapshot.docs[0].get('style'),
+        querySnapshot)
     })
   }
 

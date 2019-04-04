@@ -1,16 +1,15 @@
 <template>
-    <div class="hello">
+    <div class="hello mb-3">
         <h1>Moderator</h1>
-        <b-button @click="addRow()">Add Row</b-button>
-        <ul>
-            <li v-for="row in rows" :key='row.id'>{{row.name}} (#{{ row.number}}) {{row[450]}} is {{new Date(row.created_on)}}</li>
-        </ul>
+        <b-button @click="start()">Start</b-button>
+        <b-button @click="stop()">Stop</b-button>
     </div>
 </template>
 
 <script>
-import firebase from '../services/firebase'
+import firebase from '@/services/firebase'
 
+let interval
 export default {
   name: 'Moderator',
   data () {
@@ -18,17 +17,18 @@ export default {
       rows: [],
     }
   },
-  mounted () {
-    firebase.listenUsers((querySnapshot) => {
-      this.rows = []
-      querySnapshot.forEach((doc) => {
-        this.rows.push(doc.data())
-      })
-    })
-  },
   methods: {
-    addRow () {
-      firebase.addRow()
+    start () {
+      interval = setInterval(() => {
+        if (Math.floor(Math.random() * 2)) {
+          firebase.addRow('LEFT', Math.floor(Math.random() * 9) + 1, { fontSize: `${Math.floor(Math.random() * 400) + 40}px`, })
+        } else {
+          firebase.addRow('RIGHT', Math.floor(Math.random() * 9) + 1, { fontSize: `${Math.floor(Math.random() * 400) + 40}px`, })
+        }
+      }, 2000)
+    },
+    stop () {
+      clearInterval(interval)
     },
   },
 }
