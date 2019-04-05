@@ -1,22 +1,16 @@
 <template>
   <div>
     <Moderator></Moderator>
-    <div class="grid-container">
-      <Viewer view="LEFT"></Viewer>
-      <Viewer view="RIGHT"></Viewer>
-    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Moderator from '@/components/Moderator.vue'
-import Viewer from '@/components/Viewer.vue'
 
 export default {
   name: 'home',
   components: {
-    Viewer,
     Moderator,
   },
 }

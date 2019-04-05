@@ -25,6 +25,16 @@ const Firebase = class {
     })
   }
 
+  getRounds (callback) {
+    this.getDB().collection(this.collectionPath).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
+      let rounds = []
+      querySnapshot.forEach((doc) => {
+        rounds.push(doc.data())
+      })
+      callback(rounds)
+    })
+  }
+
   listenScreen (screen, callback) {
     this.getDB().collection(this.collectionPath).where('screen', '==', screen).limit(1).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
       let content = ''

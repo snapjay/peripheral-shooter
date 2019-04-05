@@ -22,7 +22,7 @@
                 </b-form-group>
             </b-col>
             <b-col>
-                <b-form-group label="Show" description="How long to show value for">
+                <b-form-group label="Show" description="How long to show content for">
                     <b-input-group append="ms">
                         <b-form-input id="hide" v-model="hide" trim></b-form-input>
                     </b-input-group>
@@ -36,17 +36,32 @@
                 <b-button variant="danger" @click="stop()" v-if="running">Stop</b-button>
             </b-col>
         </b-row>
+
+        <b-row>
+            <b-col>
+                <b-table :items="rounds" :fields="fields">
+                    <template slot="shot" slot-scope="data">
+                        {{ rounds.length - data.index }}
+                    </template>
+                    <template slot="created" slot-scope="data">
+                        {{ data.item.created | renderTime }}
+                    </template>
+                </b-table>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
 <script>
 import firebase from '@/services/firebase'
-import randomInt from '@/services/utils'
+import { randomInt, dateFormat } from '@/services/utils'
 
 export default {
   name: 'Moderator',
   data () {
     return {
+      fields: [ 'shot', { key: 'created', label: 'Time', }, 'content', 'screen', ],
+      rounds: [],
       running: false,
       range: {
         from: 1,
@@ -54,8 +69,18 @@ export default {
       },
       shots: 10,
       update: 2000,
-      hide: 100,
+      hide: 300,
     }
+  },
+  mounted () {
+    firebase.getRounds((rounds) => {
+      this.rounds = rounds
+    })
+  },
+  filters: {
+    renderTime (timestamp) {
+      return dateFormat(timestamp.toDate())
+    },
   },
   methods: {
     start () {
