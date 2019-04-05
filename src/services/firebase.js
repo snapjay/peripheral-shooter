@@ -72,6 +72,18 @@ const Firebase = class {
     })
   }
 
+  listenGames (callback) {
+    this.getDB().collection(this.collectionPath).limit(30).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
+      let games = []
+      querySnapshot.forEach((doc) => {
+        let row = doc.data()
+        row.id = doc.id
+        games.push(row)
+      })
+      callback(games)
+    })
+  }
+
   getDB () {
     return this.db
   }

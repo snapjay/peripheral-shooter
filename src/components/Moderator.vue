@@ -62,7 +62,7 @@
 
 <script>
   import firebase from '@/services/firebase'
-  import { randomInt, dateFormat } from '@/services/utils'
+  import { randomInt } from '@/services/utils'
 
   const SCREEN_LEFT = 'LEFT'
   const SCREEN_RIGHT = 'RIGHT'
@@ -88,13 +88,6 @@
       firebase.listenShots(this.gameId, (shots) => {
         this.shots = shots
       })
-    },
-    filters: {
-      renderTime (timestamp) {
-        if (timestamp) {
-          return dateFormat(new Date(timestamp.toDate()))
-        }
-      },
     },
     methods: {
       start () {
