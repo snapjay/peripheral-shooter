@@ -1,6 +1,7 @@
 'use strict'
 import firebase from 'firebase'
 import 'firebase/firestore'
+import { genCode } from '@/services/utils'
 
 const Firebase = class {
   constructor () {
@@ -13,30 +14,54 @@ const Firebase = class {
       // messagingSenderId: '447871794333'
     })
     this.db = firebase.firestore()
-    this.collectionPath = 'round'
+    this.collectionPath = 'games'
   }
 
-  addRow (screen, content, meta = {}) {
-    return this.db.collection(this.collectionPath).add({
+  updateGame (gameId, settings) {
+    return this.getDB().collection(this.collectionPath).doc(gameId).update(settings)
+  }
+
+  createGame (code) {
+    if (!code) code = genCode()
+    return this.getDB().collection(this.collectionPath).add({
+      code,
+      range: {
+        from: 1,
+        to: 5,
+      },
+      update: 2000,
+      hide: 1000,
+      created: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+  }
+
+  addShot (gameId, screen, content, meta = {}) {
+    return this.getDB().collection(this.collectionPath).doc(gameId).collection('shots').add({
       screen,
       content,
       meta,
-      created: firebase.firestore.Timestamp.fromDate(new Date()),
+      created: firebase.firestore.FieldValue.serverTimestamp(),
     })
   }
 
-  getRounds (callback) {
-    this.getDB().collection(this.collectionPath).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
-      let rounds = []
+  listenShots (gameId, callback) {
+    this.getDB().collection(this.collectionPath).doc(gameId).collection('shots').orderBy('created', 'desc').onSnapshot((querySnapshot) => {
+      let shots = []
       querySnapshot.forEach((doc) => {
-        rounds.push(doc.data())
+        shots.push(doc.data())
       })
-      callback(rounds)
+      callback(shots)
     })
   }
 
-  listenScreen (screen, callback) {
-    this.getDB().collection(this.collectionPath).where('screen', '==', screen).limit(1).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
+  listenGame (gameId, callback) {
+    this.getDB().collection(this.collectionPath).doc(gameId).onSnapshot((doc) => {
+      callback(doc)
+    })
+  }
+
+  listenScreen (gameId, screen, callback) {
+    this.getDB().collection(this.collectionPath).doc(gameId).collection('shots').where('screen', '==', screen).limit(1).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
       let content = ''
       let meta = {}
       if (querySnapshot.docs.length) {

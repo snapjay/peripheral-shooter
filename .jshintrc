@@ -11,7 +11,7 @@
     "it": false,
     "expect": false,
 
-
+    "module": false,
     "browser": false,
     "element": false,
     "by": false

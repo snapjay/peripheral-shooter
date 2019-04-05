@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <Moderator></Moderator>
-  </div>
+    <div>
+        <b-btn @click="newGame">New Game</b-btn>
+        <h2>Choose a Game</h2>
+    </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Moderator from '@/components/Moderator.vue'
+  import firebase from '@/services/firebase'
 
-export default {
-  name: 'home',
-  components: {
-    Moderator,
-  },
-}
-</script>
-
-<style scoped lang="scss">
-  .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 20px;
-    grid-template-areas: ". .";
+  export default {
+    name: 'home',
+    methods: {
+      newGame () {
+        firebase.createGame().then((docRef) => {
+          this.$router.push({
+            name: 'Moderator',
+            params: {
+              gameId: docRef.id,
+            },
+          })
+        })
+      },
+    },
   }
-</style>
+</script>

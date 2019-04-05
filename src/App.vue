@@ -6,9 +6,10 @@
 
           <b-collapse id="nav-collapse" is-nav>
               <b-navbar-nav>
-                  <b-nav-item to="/">Moderator</b-nav-item>
-                  <b-nav-item :to='{name: "client", params:{id: "LEFT"}}'>Left</b-nav-item>
-                  <b-nav-item :to='{name: "client", params:{id: "RIGHT"}}'>Right</b-nav-item>
+                  <b-nav-item :to='{name: "Home"}'>Home</b-nav-item>
+                  <b-nav-item :to='{name: "Moderator"}'>Moderator</b-nav-item>
+                  <b-nav-item :to='{name: "Client", params:{view: "LEFT"}}'>Left</b-nav-item>
+                  <b-nav-item :to='{name: "Client", params:{view: "RIGHT"}}'>Right</b-nav-item>
               </b-navbar-nav>
           </b-collapse>
       </b-navbar>

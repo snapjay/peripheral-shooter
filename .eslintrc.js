@@ -12,10 +12,12 @@ module.exports = {
     'comma-dangle': ["error", {
       "arrays": "always",
       "objects": "always",
-      "imports": "never",
-      "exports": "never",
+      "imports": "ignore",
+      "exports": "ignore",
       "functions": "ignore"
     }],
+    'indent': 'off',
+    'vue/script-indent': ["error", 2, {"baseIndent": 1}],
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   },

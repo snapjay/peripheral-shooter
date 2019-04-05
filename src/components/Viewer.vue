@@ -2,36 +2,42 @@
     <div>
         <small class="text-light bg-secondary px-2 float-right">{{ view }}</small>
         <div class="container" :style="style">
-            {{content}}
+            {{ content }}
         </div>
     </div>
 
 </template>
 
 <script>
-import firebase from '../services/firebase'
+  import firebase from '../services/firebase'
 
-export default {
-  name: 'Viewer',
-  props: {
-    view: String,
-  },
-  data () {
-    return {
-      content: '',
-      style: {},
-    }
-  },
-  mounted () {
-    firebase.listenScreen(this.view, (content, meta, querySnapshot) => {
-      this.content = content
-      this.meta = meta.style
-      setTimeout(() => {
-        this.content = ''
-      }, meta.hide)
-    })
-  },
-}
+  export default {
+    name: 'Viewer',
+    props: {
+      view: String,
+      gameId: String,
+    },
+    data () {
+      return {
+        content: '',
+        style: {},
+        game: false,
+      }
+    },
+    mounted () {
+      firebase.listenScreen(this.gameId, this.view, (content, meta, querySnapshot) => {
+        this.content = content
+        this.meta = meta.style
+        setTimeout(() => {
+          this.content = ''
+        }, this.game.hide)
+      })
+
+      firebase.listenGame(this.gameId, (gameDocument) => {
+        this.game = gameDocument.data()
+      })
+    },
+  }
 
 </script>
 

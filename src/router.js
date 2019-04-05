@@ -11,12 +11,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home,
     },
     {
-      path: '/client/:id',
-      name: 'client',
+      path: '/moderator/:gameId',
+      props: true,
+      name: 'Moderator',
+      component: () => import(/* webpackChunkName: "about" */ './views/Moderator.vue'),
+    },
+    {
+      path: '/client/:gameId/:view',
+      name: 'Client',
       props: true,
       component: () => import(/* webpackChunkName: "about" */ './views/Client.vue'),
     },
