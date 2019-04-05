@@ -16,11 +16,11 @@ const Firebase = class {
     this.collectionPath = 'round'
   }
 
-  addRow (screen, content, style = {}) {
+  addRow (screen, content, meta = {}) {
     return this.db.collection(this.collectionPath).add({
       screen,
       content,
-      style,
+      meta,
       created: firebase.firestore.Timestamp.fromDate(new Date()),
     })
   }
@@ -28,12 +28,12 @@ const Firebase = class {
   listenScreen (screen, callback) {
     this.getDB().collection(this.collectionPath).where('screen', '==', screen).limit(1).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
       let content = ''
-      let style = {}
+      let meta = {}
       if (querySnapshot.docs.length) {
         content = querySnapshot.docs[0].get('content')
-        style = querySnapshot.docs[0].get('style')
+        meta = querySnapshot.docs[0].get('meta')
       }
-      callback(content, style, querySnapshot)
+      callback(content, meta, querySnapshot)
     })
   }
 

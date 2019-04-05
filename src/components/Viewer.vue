@@ -2,7 +2,7 @@
     <div>
         <small class="text-light bg-secondary px-2 float-right">{{ view }}</small>
         <div class="container" :style="style">
-            {{content}} 2
+            {{content}}
         </div>
     </div>
 
@@ -23,12 +23,12 @@ export default {
     }
   },
   mounted () {
-    firebase.listenScreen(this.view, (content, style, querySnapshot) => {
+    firebase.listenScreen(this.view, (content, meta, querySnapshot) => {
       this.content = content
-      this.style = style
+      this.meta = meta.style
       setTimeout(() => {
         this.content = ''
-      }, 1000)
+      }, meta.hide)
     })
   },
 }
