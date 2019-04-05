@@ -27,9 +27,13 @@ const Firebase = class {
 
   listenScreen (screen, callback) {
     this.getDB().collection(this.collectionPath).where('screen', '==', screen).limit(1).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
-      callback(querySnapshot.docs[0].get('content'),
-        querySnapshot.docs[0].get('style'),
-        querySnapshot)
+      let content = ''
+      let style = {}
+      if (querySnapshot.docs.length) {
+        content = querySnapshot.docs[0].get('content')
+        style = querySnapshot.docs[0].get('style')
+      }
+      callback(content, style, querySnapshot)
     })
   }
 

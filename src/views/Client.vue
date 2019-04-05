@@ -1,6 +1,5 @@
 <template>
   <div class="hello mb-3">
-    <h1>Client</h1>
     <Viewer :view="id"></Viewer>
   </div>
 </template>

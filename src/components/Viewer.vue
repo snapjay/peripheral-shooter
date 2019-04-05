@@ -1,8 +1,8 @@
 <template>
     <div>
         <small class="text-light bg-secondary px-2 float-right">{{ view }}</small>
-        <div class="client border border-primary" :style="style">
-            {{content}}
+        <div class="container" :style="style">
+            {{content}} 2
         </div>
     </div>
 
@@ -12,7 +12,7 @@
 import firebase from '../services/firebase'
 
 export default {
-  name: 'View',
+  name: 'Viewer',
   props: {
     view: String,
   },
@@ -36,12 +36,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    small {
-        font-size: 10px;
+    .container {
+        font-size: 200px;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-column-gap: 0;
+        grid-row-gap: 0;
+        justify-items: center;
+        align-items: center;
     }
 
-    .client {
-        font-size: 200px;
-        text-align: center;
+    small {
+        font-size: 10px;
     }
 </style>
