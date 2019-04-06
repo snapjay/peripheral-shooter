@@ -1,5 +1,5 @@
 <template>
-    <div class="hello h-100 mb-3 r-d position-relative" v-if="game" :style="styleBlock"
+    <div class="client h-100 mb-3 r-d position-relative" v-if="game" :style="styleBlock"
          v-on:touchstart="overlay=true" v-on:touchend="overlay=false" @mousedown="overlay=true"
          @mouseup="overlay=false">
         <div v-if='overlay' class="overlay position-absolute w-100 h-100 bg-secondary text-white text-center pt-5">
@@ -57,9 +57,11 @@
     .overlay {
         user-select: none;
     }
+    .client {
+        font-size: 200px;
+    }
 
     .container {
-        font-size: 200px;
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;

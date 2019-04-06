@@ -34,6 +34,16 @@
                         </b-form-group>
                     </b-col>
                 </b-row>
+                <hr>
+                <b-row>
+                    <b-col>
+                        <b-form-group label="Style" description="JSON string for styles of client">
+                            <b-input-group>
+                                <b-form-textarea  id="style" v-model="game.meta.style" trim></b-form-textarea>
+                            </b-input-group>
+                        </b-form-group>
+                    </b-col>
+                </b-row>
                 <div slot="modal-footer" class="w-100">
 
                     <b-row>
@@ -103,7 +113,9 @@
     mounted () {
       firebase.listenGame(this.gameId, (gameDocument) => {
         this.gameDocument = gameDocument
-        this.game = gameDocument.data()
+        const game = gameDocument.data()
+        this.game = game
+        this.game.meta.style = JSON.stringify(game.meta.style)
       })
 
       firebase.listenShots(this.gameId, (shots) => {
@@ -130,6 +142,9 @@
           hide: this.game.hide,
           update: this.game.update,
           range: this.game.range,
+          meta: {
+            style: JSON.parse(this.game.meta.style),
+          },
         })
         this.showSettings = false
       },
