@@ -6,7 +6,7 @@
                 <h2>Choose a Game</h2>
                 <b-table :items="games" :fields="fields">
                     <template slot="created" slot-scope="data">
-                        {{ data.item.created | renderTime }}
+                        {{ data.item.created | renderDate }}
                     </template>
                     <template slot="action" slot-scope="data">
                         <b-dropdown text="Moderator" variant="outline-primary" split

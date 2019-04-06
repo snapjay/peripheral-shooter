@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <b-alert v-if="gameDocument && !gameDocument.exists" class="mt-3" :show="true">This game does not exist</b-alert>
+    <div  class="mt-3" >
+        <b-alert v-if="gameDocument && !gameDocument.exists" :show="true">This game does not exist</b-alert>
         <div v-if="gameDocument && gameDocument.exists">
-            <h1>Moderator - {{ game.code }}</h1>
+            <h3>Moderator  <small class="pl-3 text-primary">{{ game.code }}</small> </h3>
             <b-modal id="settings" title="Settings" v-model="showSettings">
                 <h6>Display Range</h6>
                 <b-row>
@@ -102,7 +102,6 @@
     },
     mounted () {
       firebase.listenGame(this.gameId, (gameDocument) => {
-        console.log(gameDocument.exists)
         this.gameDocument = gameDocument
         this.game = gameDocument.data()
       })
