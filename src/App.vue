@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
       <b-navbar toggleable="lg" type="dark" variant="primary">
           <b-navbar-brand href="#">Peripheral Shooter</b-navbar-brand>
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -13,9 +13,9 @@
               </b-navbar-nav>
           </b-collapse>
       </b-navbar>
-    <b-container  id="app">
-      <b-row>
-        <b-col>
+    <b-container fluid class="h-100" id="app">
+      <b-row class="h-100">
+        <b-col class="h-100 p-0">
           <router-view/>
         </b-col>
       </b-row>

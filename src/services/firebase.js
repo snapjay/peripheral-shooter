@@ -1,7 +1,7 @@
 'use strict'
 import firebase from 'firebase'
 import 'firebase/firestore'
-import { genCode } from '@/services/utils'
+import {genCode} from '@/services/utils'
 
 const Firebase = class {
   constructor () {
@@ -29,6 +29,7 @@ const Firebase = class {
         from: 1,
         to: 5,
       },
+      meta: {},
       update: 2000,
       hide: 1000,
       created: firebase.firestore.FieldValue.serverTimestamp(),
@@ -48,7 +49,9 @@ const Firebase = class {
     this.getDB().collection(this.collectionPath).doc(gameId).collection('shots').orderBy('created', 'desc').onSnapshot((querySnapshot) => {
       let shots = []
       querySnapshot.forEach((doc) => {
-        shots.push(doc.data())
+        if (!doc.metadata.hasPendingWrites) {
+          shots.push(doc.data())
+        }
       })
       callback(shots)
     })

@@ -1,8 +1,7 @@
 <template>
-    <div>
-        <h1>Moderator</h1>
+    <b-container>
         <Moderator :gameId="gameId"></Moderator>
-    </div>
+    </b-container>
 </template>
 
 <script>

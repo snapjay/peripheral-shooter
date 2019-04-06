@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <b-btn @click="newGame">New Game</b-btn>
+    <div class="mt-3">
+        <b-btn class="my-2 float-right" @click="newGame">New Game</b-btn>
         <h2>Choose a Game</h2>
         <b-table :items="games" :fields="fields">
             <template slot="created" slot-scope="data">

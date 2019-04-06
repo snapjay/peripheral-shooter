@@ -16,6 +16,7 @@ module.exports = {
       "exports": "ignore",
       "functions": "ignore"
     }],
+    'object-curly-spacing' : "off",
     'indent': 'off',
     'vue/script-indent': ["error", 2, {"baseIndent": 1}],
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',

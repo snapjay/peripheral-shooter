@@ -1,6 +1,8 @@
 <template>
     <div class="hello mb-3">
+        <b-alert v-if="!game" :show="true">Unknown game</b-alert>
         <div v-if="game">
+            <h1>Moderator - {{ game.code }}</h1>
             <b-modal id="settings" title="Settings" @ok="updateSettings">
                 <h6>Display Range</h6>
                 <b-row>
@@ -56,7 +58,6 @@
                 </b-col>
             </b-row>
         </div>
-        <b-alert v-if="!game" :show="true">Unknown game</b-alert>
     </div>
 </template>
 
@@ -72,7 +73,7 @@
     data () {
       return {
         game: false,
-        fields: ['shot', { key: 'created', label: 'Time', }, 'content', 'screen',],
+        fields: [ 'shot', { key: 'created', label: 'Time', }, 'content', 'screen', ],
         shots: [],
         running: false,
       }
@@ -94,7 +95,7 @@
         this.running = setInterval(() => {
           let screen = SCREEN_LEFT
           if (Math.floor(Math.random() * 2)) screen = SCREEN_RIGHT
-          firebase.addShot(this.gameId, screen, randomInt(this.game.range.from, this.game.range.to), {hide: this.game.hide,})
+          firebase.addShot(this.gameId, screen, randomInt(this.game.range.from, this.game.range.to), { hide: this.game.hide, })
         }, this.game.update)
       },
       stop () {
