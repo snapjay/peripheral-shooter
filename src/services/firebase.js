@@ -14,16 +14,17 @@ const Firebase = class {
       // messagingSenderId: '447871794333'
     })
     this.db = firebase.firestore()
-    this.collectionPath = 'games'
+    this.collectionGame = 'games'
+    this.collectionShots = 'shots'
   }
 
   updateGame (gameId, settings) {
-    return this.getDB().collection(this.collectionPath).doc(gameId).update(settings)
+    return this.getDB().collection(this.collectionGame).doc(gameId).update(settings)
   }
 
   createGame (code) {
     if (!code) code = genCode()
-    return this.getDB().collection(this.collectionPath).add({
+    return this.getDB().collection(this.collectionGame).add({
       code,
       range: {
         from: 1,
@@ -37,7 +38,7 @@ const Firebase = class {
   }
 
   addShot (gameId, screen, content, meta = {}) {
-    return this.getDB().collection(this.collectionPath).doc(gameId).collection('shots').add({
+    return this.getDB().collection(this.collectionGame).doc(gameId).collection(this.collectionShots).add({
       screen,
       content,
       meta,
@@ -46,7 +47,7 @@ const Firebase = class {
   }
 
   listenShots (gameId, callback) {
-    this.getDB().collection(this.collectionPath).doc(gameId).collection('shots').orderBy('created', 'desc').onSnapshot((querySnapshot) => {
+    this.getDB().collection(this.collectionGame).doc(gameId).collection(this.collectionShots).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
       let shots = []
       querySnapshot.forEach((doc) => {
         if (!doc.metadata.hasPendingWrites) {
@@ -58,13 +59,13 @@ const Firebase = class {
   }
 
   listenGame (gameId, callback) {
-    this.getDB().collection(this.collectionPath).doc(gameId).onSnapshot((doc) => {
+    this.getDB().collection(this.collectionGame).doc(gameId).onSnapshot((doc) => {
       callback(doc)
     })
   }
 
   listenScreen (gameId, screen, callback) {
-    this.getDB().collection(this.collectionPath).doc(gameId).collection('shots').where('screen', '==', screen).limit(1).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
+    this.getDB().collection(this.collectionGame).doc(gameId).collection(this.collectionShots).where('screen', '==', screen).limit(1).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
       let content = ''
       let meta = {}
       if (querySnapshot.docs.length) {
@@ -76,7 +77,7 @@ const Firebase = class {
   }
 
   listenGames (callback) {
-    this.getDB().collection(this.collectionPath).limit(30).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
+    this.getDB().collection(this.collectionGame).limit(30).orderBy('created', 'desc').onSnapshot((querySnapshot) => {
       let games = []
       querySnapshot.forEach((doc) => {
         let row = doc.data()
@@ -84,6 +85,14 @@ const Firebase = class {
         games.push(row)
       })
       callback(games)
+    })
+  }
+
+  deleteShots (gameId) {
+    this.getDB().collection(this.collectionGame).doc(gameId).collection(this.collectionShots).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        this.getDB().collection(this.collectionGame).doc(gameId).collection(this.collectionShots).doc(doc.id).delete()
+      })
     })
   }
 

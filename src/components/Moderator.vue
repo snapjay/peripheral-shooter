@@ -1,9 +1,9 @@
 <template>
-    <div class="hello mb-3">
-        <b-alert v-if="!game" :show="true">Unknown game</b-alert>
-        <div v-if="game">
+    <div>
+        <b-alert v-if="gameDocument && !gameDocument.exists" class="mt-3" :show="true">This game does not exist</b-alert>
+        <div v-if="gameDocument && gameDocument.exists">
             <h1>Moderator - {{ game.code }}</h1>
-            <b-modal id="settings" title="Settings" @ok="updateSettings">
+            <b-modal id="settings" title="Settings" v-model="showSettings">
                 <h6>Display Range</h6>
                 <b-row>
                     <b-col>
@@ -34,6 +34,24 @@
                         </b-form-group>
                     </b-col>
                 </b-row>
+                <div slot="modal-footer" class="w-100">
+
+                    <b-row>
+                        <b-col>
+                            <b-button variant="danger" @click="deleteShots()" :disabled="shots.length === 0">Clear History</b-button>
+                        </b-col>
+                        <b-col>
+                            <b-button
+                                    variant="primary"
+                                    class="float-right b-table-stacked ml-2"
+                                    @click="updateSettings">OK </b-button>
+                            <b-button
+                                    variant="outline-secondary"
+                                    class="float-right"
+                                    @click="showSettings=false">Cancel</b-button>
+                        </b-col>
+                    </b-row>
+                </div>
             </b-modal>
             <b-row>
                 <b-col>
@@ -46,8 +64,7 @@
             </b-row>
             <b-row>
                 <b-col>
-                    <h3 class="mt-3">Results</h3>
-                    <b-table :items="shots" :fields="fields">
+                    <b-table class="mt-3" :items="shots" :fields="fields" v-if="shots.length">
                         <template slot="shot" slot-scope="data">
                             {{ shots.length - data.index }}
                         </template>
@@ -72,6 +89,8 @@
     name: 'Moderator',
     data () {
       return {
+        showSettings: false,
+        gameDocument: null,
         game: false,
         fields: [ 'shot', { key: 'created', label: 'Time', }, 'content', 'screen', ],
         shots: [],
@@ -83,6 +102,8 @@
     },
     mounted () {
       firebase.listenGame(this.gameId, (gameDocument) => {
+        console.log(gameDocument.exists)
+        this.gameDocument = gameDocument
         this.game = gameDocument.data()
       })
 
@@ -102,12 +123,16 @@
         clearInterval(this.running)
         this.running = false
       },
+      deleteShots () {
+        firebase.deleteShots(this.gameId)
+      },
       updateSettings () {
         firebase.updateGame(this.gameId, {
           hide: this.game.hide,
           update: this.game.update,
           range: this.game.range,
         })
+        this.showSettings = false
       },
     },
   }
