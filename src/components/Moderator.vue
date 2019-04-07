@@ -1,9 +1,11 @@
 <template>
-    <div  class="mt-3" >
+    <div class="mt-3">
         <b-alert v-if="gameDocument && !gameDocument.exists" :show="true">This game does not exist</b-alert>
         <div v-if="gameDocument && gameDocument.exists">
-            <h3>Moderator  <small class="pl-3 text-primary">{{ game.code }}</small> </h3>
-            <b-modal id="settings" title="Settings" v-model="showSettings">
+            <h3>Moderator
+                <small class="pl-3 text-primary">{{ game.code }}</small>
+            </h3>
+            <b-modal id="settings" title="Settings" v-model="showSettings" size="lg">
                 <h6>Display Range</h6>
                 <b-row>
                     <b-col>
@@ -36,11 +38,17 @@
                 </b-row>
                 <hr>
                 <b-row>
+                    <b-col cols="3">
+                        <b-form-group label="Shot Limit:" description="Number of shots to fire">
+                            <b-form-input type="number" id="shotLimit" max="50" v-model="game.shotLimit" trim></b-form-input>
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                <hr>
+                <b-row>
                     <b-col>
                         <b-form-group label="Style" description="JSON string for styles of client">
-                            <b-input-group>
-                                <b-form-textarea  id="style" v-model="game.meta.style" trim></b-form-textarea>
-                            </b-input-group>
+                            <b-form-textarea id="style" v-model="game.meta.style" trim></b-form-textarea>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -48,17 +56,21 @@
 
                     <b-row>
                         <b-col>
-                            <b-button variant="danger" @click="deleteShots()" :disabled="shots.length === 0">Clear History</b-button>
+                            <b-button variant="danger" @click="deleteShots()" :disabled="shots.length === 0">Clear
+                                History
+                            </b-button>
                         </b-col>
                         <b-col>
                             <b-button
                                     variant="primary"
                                     class="float-right b-table-stacked ml-2"
-                                    @click="updateSettings">OK </b-button>
+                                    @click="updateSettings">OK
+                            </b-button>
                             <b-button
                                     variant="outline-secondary"
                                     class="float-right"
-                                    @click="showSettings=false">Cancel</b-button>
+                                    @click="showSettings=false">Cancel
+                            </b-button>
                         </b-col>
                     </b-row>
                 </div>
@@ -90,11 +102,12 @@
 
 <script>
   import firebase from '@/services/firebase'
-  import { randomInt } from '@/services/utils'
+  import {randomInt} from '@/services/utils'
 
   const SCREEN_LEFT = 'LEFT'
   const SCREEN_RIGHT = 'RIGHT'
 
+  let shotlimit
   export default {
     name: 'Moderator',
     data () {
@@ -124,7 +137,12 @@
     },
     methods: {
       start () {
+        shotlimit = 0
         this.running = setInterval(() => {
+          shotlimit++
+          if (shotlimit === this.game.shotLimit) {
+            this.stop()
+          }
           let screen = SCREEN_LEFT
           if (Math.floor(Math.random() * 2)) screen = SCREEN_RIGHT
           firebase.addShot(this.gameId, screen, randomInt(this.game.range.from, this.game.range.to), { hide: this.game.hide, })
@@ -139,9 +157,13 @@
       },
       updateSettings () {
         firebase.updateGame(this.gameId, {
-          hide: this.game.hide,
-          update: this.game.update,
-          range: this.game.range,
+          hide: parseInt(this.game.hide),
+          shotLimit: parseInt(this.game.shotLimit),
+          update: parseInt(this.game.update),
+          range: {
+            from: parseInt(this.game.range.from),
+            to: parseInt(this.game.range.to),
+          },
           meta: {
             style: JSON.parse(this.game.meta.style),
           },
