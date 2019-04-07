@@ -26,6 +26,7 @@ const Firebase = class {
     if (!code) code = genCode()
     return this.getDB().collection(this.collectionGame).add({
       code,
+      shotLimit: 10,
       range: {
         from: 1,
         to: 5,
