@@ -1,29 +1,7 @@
-# peripheral-shooter
+# Peripheral Shooter
 
-## Project setup
-```
-npm install
-```
+Tactical shooting training to improve peripheral awareness while under stress
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## About
+Peripheral Shooter tests a shooters peripheral awareness by sending instruction to the shooter on screens in their left and right peripheral vision.
+Shooter must follow instructions while not loosing focus on primary target. 

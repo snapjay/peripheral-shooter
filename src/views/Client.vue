@@ -60,7 +60,6 @@
     .client {
         font-size: 200px;
     }
-
     .container {
         display: grid;
         grid-template-columns: 1fr;
