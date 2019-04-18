@@ -85,8 +85,11 @@
                             <b-row>
                                 <b-col>
                                     <b-form-group label="Style:" description="JSON string for styles of client.">
-                                        <b-form-textarea id="style" v-model="game.meta.style" trim></b-form-textarea>
+                                        <b-form-textarea name="style" id="style" v-model="game.meta.style" v-validate="'is_json'" trim></b-form-textarea>
                                     </b-form-group>
+                                    <b-form-invalid-feedback :state="!errors.first('style') ">
+                                        {{ errors.first('style') }}
+                                    </b-form-invalid-feedback>
                                 </b-col>
                             </b-row>
                         </b-container>
