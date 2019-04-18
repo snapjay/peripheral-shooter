@@ -85,9 +85,6 @@
         clearInterval(this.running)
         this.running = false
       },
-      deleteShots () {
-        firebase.deleteShots(this.gameId)
-      },
     },
   }
 

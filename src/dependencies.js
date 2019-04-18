@@ -1,6 +1,11 @@
 'use strict'
 import Vue from 'vue'
 import dateFormat from 'dateformat'
+import VeeValidate from 'vee-validate'
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(VeeValidate)
+Vue.use(BootstrapVue)
 
 Vue.filter('renderTime', (timestamp) => {
   if (timestamp) {
