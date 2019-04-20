@@ -1,8 +1,8 @@
 <template>
     <b-container>
-        <div class="mt-3">
-            <b-alert v-if="gameDocument && !gameDocument.exists" :show="true">This game does not exist</b-alert>
-            <div v-if="gameDocument && gameDocument.exists">
+        <div class="mt-3"  v-if="gameDocument">
+            <b-alert v-if="!gameDocument.exists" :show="true">This game does not exist</b-alert>
+            <div v-if="gameDocument.exists">
                 <h3>Moderator
                     <small class="pl-3 text-primary">{{ game.code }}</small>
                 </h3>
@@ -11,6 +11,7 @@
                         <Settings class="mr-2 float-right" :game="game" :gameId="gameId" :shots="shots.length"
                                   v-if="!GameEngine.running"></Settings>
                         <b-button class="mr-2" variant="success" @click="start()" v-if="!GameEngine.running">Start
+                            <b-badge variant="light" class="ml-2">{{ this.game.shotLimit }} shots</b-badge>
                         </b-button>
                         <b-button variant="danger" @click="stop()" v-if="GameEngine.running">Stop</b-button>
                     </b-col>
@@ -60,7 +61,6 @@
       firebase.listenGame(this.gameId, (gameDocument) => {
         this.gameDocument = gameDocument
         this.game = gameDocument.data()
-        this.game.meta.style = JSON.stringify(this.game.meta.style)
         this.GameEngine = new GameEngine(this.gameId, {
           shotLimit: this.game.shotLimit,
           update: this.game.update,

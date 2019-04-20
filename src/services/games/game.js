@@ -27,7 +27,7 @@ const GameEngine = class {
       this.stop()
     }
     let { screen, display, } = this.game.fire()
-    firebase.addShot(this.gameId, screen, display)
+    firebase.addShot(this.gameId, screen, display, { shotInString: this.shotLimit, })
   }
 }
 
