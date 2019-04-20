@@ -8,14 +8,16 @@
                 </h3>
                 <b-row>
                     <b-col>
-                        <Settings class="mr-2 float-right" :game="game" :gameId="gameId" :shots="shots.length" v-if="!running"></Settings>
-                        <b-button class="mr-2" variant="success" @click="start()" v-if="!running">Start</b-button>
-                        <b-button variant="danger" @click="stop()" v-if="running">Stop</b-button>
+                        <Settings class="mr-2 float-right" :game="game" :gameId="gameId" :shots="shots.length"
+                                  v-if="!GameEngine.running"></Settings>
+                        <b-button class="mr-2" variant="success" @click="start()" v-if="!GameEngine.running">Start
+                        </b-button>
+                        <b-button variant="danger" @click="stop()" v-if="GameEngine.running">Stop</b-button>
                     </b-col>
                 </b-row>
                 <b-row>
                     <b-col>
-                        <b-table class="mt-3" :items="shots" :fields="fields" v-if="shots.length">
+                        <b-table class="mt-3" :items="shots" :fields="tbFields" v-if="shots.length">
                             <template slot="shot" slot-scope="data">
                                 {{ shots.length - data.index }}
                             </template>
@@ -32,13 +34,10 @@
 
 <script>
   import firebase from '@/services/firebase'
-  import {randomInt} from '@/services/utils'
+  import GameEngine from '@/services/games/game'
+  import Target from '@/services/games/target'
   import Settings from '@/components/Settings'
 
-  const SCREEN_LEFT = 'LEFT'
-  const SCREEN_RIGHT = 'RIGHT'
-
-  let shotlimit
   export default {
     name: 'Moderator',
     components: {
@@ -47,8 +46,9 @@
     data () {
       return {
         gameDocument: null,
+        GameEngine: false,
         game: false,
-        fields: [ 'shot', { key: 'created', label: 'Time', }, 'content', 'screen', ],
+        tbFields: [ 'shot', { key: 'created', label: 'Time', }, 'content', 'screen', ],
         shots: [],
         running: false,
       }
@@ -59,31 +59,24 @@
     mounted () {
       firebase.listenGame(this.gameId, (gameDocument) => {
         this.gameDocument = gameDocument
-        const game = gameDocument.data()
-        this.game = game
-        this.game.meta.style = JSON.stringify(game.meta.style)
+        this.game = gameDocument.data()
+        this.game.meta.style = JSON.stringify(this.game.meta.style)
+        this.GameEngine = new GameEngine(this.gameId, {
+          shotLimit: this.game.shotLimit,
+          update: this.game.update,
+        }, new Target(this.game.range.to, this.game.range.from)
+        )
       })
-
       firebase.listenShots(this.gameId, (shots) => {
         this.shots = shots
       })
     },
     methods: {
       start () {
-        shotlimit = 0
-        this.running = setInterval(() => {
-          shotlimit++
-          if (shotlimit === this.game.shotLimit) {
-            this.stop()
-          }
-          let screen = SCREEN_LEFT
-          if (Math.floor(Math.random() * 2)) screen = SCREEN_RIGHT
-          firebase.addShot(this.gameId, screen, randomInt(this.game.range.from, this.game.range.to), { hide: this.game.hide, })
-        }, this.game.update)
+        this.GameEngine.start()
       },
       stop () {
-        clearInterval(this.running)
-        this.running = false
+        this.GameEngine.stop()
       },
     },
   }
