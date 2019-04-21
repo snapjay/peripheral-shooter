@@ -24,9 +24,9 @@
                                     <b-form-group label="To:">
                                         <b-form-input type="number" name="range-to" id="range-to"
                                                       v-model="game.range.to"
-                                                      v-validate="`required|numeric|min_value:${parseInt(game.range.from)+1}|max_value:100`"
+                                                      v-validate="`required|numeric|min_value:${parseInt(game.range.from)+1}`"
                                                       trim></b-form-input>
-                                        <b-form-invalid-feedback :state="!errors.first('range-to') "  style="cursor:pointer;" @click="game.range.to = (parseInt(game.range.from)+1)">
+                                        <b-form-invalid-feedback :state="!errors.first('range-to')"  style="cursor:pointer;" @click="game.range.to = (parseInt(game.range.from)+1)">
                                             {{ errors.first('range-to') }}
                                         </b-form-invalid-feedback>
                                     </b-form-group>

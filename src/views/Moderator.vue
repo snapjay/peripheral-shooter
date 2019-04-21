@@ -1,6 +1,6 @@
 <template>
     <b-container>
-        <div class="mt-3"  v-if="gameDocument">
+        <div class="mt-3" v-if="gameDocument">
             <b-alert v-if="!gameDocument.exists" :show="true">This game does not exist</b-alert>
             <div v-if="gameDocument.exists">
                 <h3>Moderator
@@ -8,12 +8,11 @@
                 </h3>
                 <b-row>
                     <b-col>
-                        <Settings class="mr-2 float-right" :game="game" :gameId="gameId" :shots="shots.length"
-                                  v-if="!GameEngine.running"></Settings>
-                        <b-button class="mr-2" variant="success" @click="start()" v-if="!GameEngine.running">Start
-                        </b-button>
+                        <Settings class="mr-2 float-right" :game="game" :gameId="gameId" :shots="shots.length" v-if="!GameEngine.running"></Settings>
+                        <b-button class="mr-2" variant="success" @click="start()" v-if="!GameEngine.running">Start</b-button>
+                        <b-button variant="danger" @click="stop()" v-if="GameEngine.running">Stop</b-button>
                         <b-badge variant="light" class="ml-2">{{ this.game.shotLimit }} shots</b-badge>
-                        <b-button variant="danger" @click="stop()" v-if="GameEngine.running">Stop</b-button></b-col>
+                    </b-col>
                 </b-row>
                 <b-row>
                     <b-col>
@@ -48,7 +47,7 @@
         gameDocument: null,
         GameEngine: false,
         game: false,
-        fields: [ 'shot', { key: 'created', label: 'Time', }, 'content', 'screen', ],
+        fields: ['shot', { key: 'created', label: 'Time', }, 'content', 'screen',],
         shots: [],
         running: false,
       }
@@ -62,9 +61,9 @@
         this.game = gameDocument.data()
         this.game.meta.style = JSON.stringify(this.game.meta.style) // Move into Settings (?)
         this.GameEngine = new GameEngine(this.gameId, {
-          shotLimit: this.game.shotLimit,
-          update: this.game.update,
-        }, new Target(this.game.range.to, this.game.range.from)
+              shotLimit: this.game.shotLimit,
+              update: this.game.update,
+            }, new Target(this.game.range.to, this.game.range.from)
         )
       })
       firebase.listenShots(this.gameId, (shots) => {
