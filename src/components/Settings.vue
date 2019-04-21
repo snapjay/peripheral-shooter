@@ -1,9 +1,7 @@
 <template>
     <div>
         <b-form @submit="updateSettings" novalidate>
-            <b-modal id="settings" title="Settings" v-model="showSettings" size="lg" no-close-on-backdrop hide-header-close
-                     no-close-on-esc>
-
+            <b-modal id="settings" title="Settings" v-model="showSettings" size="lg" no-close-on-backdrop hide-header-close no-close-on-esc>
                 <b-tabs no-fade>
                     <b-tab title="Display">
                         <b-container class="mt-3">
@@ -26,7 +24,7 @@
                                                       v-model="game.range.to"
                                                       v-validate="`required|numeric|min_value:${parseInt(game.range.from)+1}|max_value:100`"
                                                       trim></b-form-input>
-                                        <b-form-invalid-feedback :state="!errors.first('range-to') "  style="cursor:pointer;" @click="game.range.to = (parseInt(game.range.from)+1)">
+                                        <b-form-invalid-feedback :state="!errors.first('range-to')"  style="cursor:pointer;" @click="game.range.to = (parseInt(game.range.from)+1)">
                                             {{ errors.first('range-to') }}
                                         </b-form-invalid-feedback>
                                     </b-form-group>

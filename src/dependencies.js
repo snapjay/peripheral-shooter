@@ -3,9 +3,15 @@ import Vue from 'vue'
 import dateFormat from 'dateformat'
 import VeeValidate, {Validator} from 'vee-validate'
 import BootstrapVue from 'bootstrap-vue'
+import VueAnalytics from 'vue-analytics'
+import router from './router'
 
 Vue.use(VeeValidate)
 Vue.use(BootstrapVue)
+Vue.use(VueAnalytics, {
+  id: 'UA-138686134-1',
+  router,
+})
 
 Vue.filter('renderTime', (timestamp) => {
   if (timestamp) {
