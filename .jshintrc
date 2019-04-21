@@ -11,6 +11,8 @@
     "it": false,
     "expect": false,
 
+    "console": false,
+    "window": false,
     "module": false,
     "browser": false,
     "element": false,

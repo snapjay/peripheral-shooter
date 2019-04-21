@@ -6,7 +6,9 @@ import BootstrapVue from 'bootstrap-vue'
 import VueAnalytics from 'vue-analytics'
 import router from './router'
 
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, {
+  fieldsBagName: 'veeFields',
+})
 Vue.use(BootstrapVue)
 Vue.use(VueAnalytics, {
   id: 'UA-138686134-1',
