@@ -4,7 +4,9 @@ import dateFormat from 'dateformat'
 import VeeValidate, {Validator} from 'vee-validate'
 import BootstrapVue from 'bootstrap-vue'
 
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, {
+  fieldsBagName: 'veeFields',
+})
 Vue.use(BootstrapVue)
 
 Vue.filter('renderTime', (timestamp) => {

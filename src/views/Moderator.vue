@@ -4,21 +4,21 @@
             <b-alert v-if="!gameDocument.exists" :show="true">This game does not exist</b-alert>
             <div v-if="gameDocument.exists">
                 <h3>Moderator
-                    <small class="pl-3 text-primary">{{ game.code }}</small>
+                    <b-badge variant="light" class="ml-2">{{ game.code }}</b-badge>
                 </h3>
                 <b-row>
                     <b-col>
                         <Settings class="mr-2 float-right" :game="game" :gameId="gameId" :shots="shots.length"
                                   v-if="!GameEngine.running"></Settings>
                         <b-button class="mr-2" variant="success" @click="start()" v-if="!GameEngine.running">Start
-                            <b-badge variant="light" class="ml-2">{{ this.game.shotLimit }} shots</b-badge>
                         </b-button>
+                        <b-badge variant="light" class="ml-2">{{ this.game.shotLimit }} shots</b-badge>
                         <b-button variant="danger" @click="stop()" v-if="GameEngine.running">Stop</b-button>
                     </b-col>
                 </b-row>
                 <b-row>
                     <b-col>
-                        <b-table class="mt-3" :items="shots" :fields="tbFields" v-if="shots.length">
+                        <b-table class="mt-3" :items="shots" :fields="fields" v-if="shots.length">
                             <template slot="shot" slot-scope="data">
                                 {{ shots.length - data.index }}
                             </template>
@@ -49,7 +49,7 @@
         gameDocument: null,
         GameEngine: false,
         game: false,
-        tbFields: [ 'shot', { key: 'created', label: 'Time', }, 'content', 'screen', ],
+        fields: [ 'shot', { key: 'created', label: 'Time', }, 'content', 'screen', ],
         shots: [],
         running: false,
       }
@@ -61,6 +61,7 @@
       firebase.listenGame(this.gameId, (gameDocument) => {
         this.gameDocument = gameDocument
         this.game = gameDocument.data()
+        this.game.meta.style = JSON.stringify(this.game.meta.style) // Move into Settings (?)
         this.GameEngine = new GameEngine(this.gameId, {
           shotLimit: this.game.shotLimit,
           update: this.game.update,
