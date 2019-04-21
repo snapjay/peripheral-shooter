@@ -14,6 +14,7 @@
     "firebase": "^5.9.2",
     "vee-validate": "^2.2.3",
     "vue": "^2.6.6",
+    "vue-analytics": "^5.16.4",
     "vue-router": "^3.0.1",
     "vuefire": "^2.0.0-alpha.21",
     "vuex": "^3.0.1"
