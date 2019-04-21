@@ -13,8 +13,7 @@
                         <b-button class="mr-2" variant="success" @click="start()" v-if="!GameEngine.running">Start
                         </b-button>
                         <b-badge variant="light" class="ml-2">{{ this.game.shotLimit }} shots</b-badge>
-                        <b-button variant="danger" @click="stop()" v-if="GameEngine.running">Stop</b-button>
-                    </b-col>
+                        <b-button variant="danger" @click="stop()" v-if="GameEngine.running">Stop</b-button></b-col>
                 </b-row>
                 <b-row>
                     <b-col>

@@ -161,6 +161,10 @@
       },
       updateSettings (evt) {
         evt.preventDefault()
+        let style = {}
+        if (this.game.meta.style) {
+          style = JSON.parse(this.game.meta.style)
+        }
         firebase.updateGame(this.gameId, {
           hide: parseInt(this.game.hide),
           shotLimit: parseInt(this.game.shotLimit),
@@ -170,7 +174,7 @@
             to: parseInt(this.game.range.to),
           },
           meta: {
-            style: JSON.parse(this.game.meta.style),
+            style,
           },
         }).then(() => {
           this.showSettings = false
